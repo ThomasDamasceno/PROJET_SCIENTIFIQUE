@@ -3,32 +3,53 @@
     <head>
         <meta charset="UTF-8">
         <title>Leeflet</title>
-        <link rel="stylesheet" href="main.css">
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-   integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-   crossorigin=""/>
-   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-   integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-   crossorigin=""></script>
-        
+        <link rel="stylesheet" href="./main.css">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
     </head>
     
     <body>
         <div id="mapid"></div>
         <script>
-        var mymap = L.map('mapid').setView([45.75, 4.85], 12);
-        L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-    maxZoom: 18,
-    id: 'mapbox/streets-v11',
-    tileSize: 512,
-    zoomOffset: -1,
-    accessToken: 'pk.eyJ1IjoiZW1pbGVhcmd0ZSIsImEiOiJja2ppYXN3YTgwMWxhMzhzN2d5N211M3I0In0.MoGt06oEn_yTUOmdfIa_aA'
-}).addTo(mymap);
+            var mymap = L.map('mapid').setView([45.75, 4.85], 12); //création de la map avec les coordonnées de l'agglo de Lyon
+                L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+                attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                maxZoom: 18,
+                id: 'mapbox/streets-v11',
+                tileSize: 512,
+                zoomOffset: -1,
+                accessToken: 'pk.eyJ1IjoiZW1pbGVhcmd0ZSIsImEiOiJja2ppYXN3YTgwMWxhMzhzN2d5N211M3I0In0.MoGt06oEn_yTUOmdfIa_aA' //token de connexion à Mapbox
+            }).addTo(mymap);
+        let xmlhttp = new XMLHttpRequest();
 
-    let xmlhttp = new XMLHttpRequest(); //appel AJAX POUR BDD
-    xmlhttp.open("GET", "http://")
+        xmlhttp.onreadystatechange = () => {
+            // verifie si transaction est terminée
+            if(xmlhttp.readyState = 4){ // on a passé les 4 etapes 
+                //si la transcation est un succès
+                if(xmlhttp.status = 200) {
+                    //on traite les données recus
+                    console.log(xmlhttp.responseText)
+                    let donnees = JSON.parse(xmlhttp.responseText)
 
-        </script>
+                    donnees.feux.forEach(feu => { //on boucle sur les donnees
+                    // on crée un cercle pour le feu
+                    let marker = L.circle([feu.lat, feu.lon], {
+                        color: 'red', // couleur bordure 
+                        fillColor: '#f03', // couleur du remplissage
+                        radius: feu.intensite //on gere le diametre du cercle selon l'intensite
+                    }).addTo(mymap);
+                    
+                    marker.bindPopup("<b>Feu ID : " + feu.id + "</b> <br> Intensite : " + feu.intensite + "<br> Longitude :" + feu.lon + "<br> Latitude :" + feu.lat) // popup lorsqu'on clique sur un feu
+                    })
+
+                } else {
+                console.log(xmlhttp.statusText);
+            }
+        }
+    }
+
+        xmlhttp.open("GET", "http://localhost/feu/FEU/liste.php"); // requete GET depuis notre page de traitement
+        xmlhttp.send(null); // on ecrit null car on envoie pas de données on recupere seulement
+        </script> 
     </body>  
 </html>
