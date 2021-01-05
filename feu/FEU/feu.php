@@ -43,7 +43,7 @@ class Feu{
 
     public function ecrire(){
         //on écrit la requete
-        $sql = "INSERT INTO" . $this->table . "(intensite,lat,lon) VALUES (" 
+        $sql = "INSERT INTO " . $this->table . " (intensite,lat,lon) VALUES (" 
             . $this->intensite . "," . $this->lat .",". $this->lon . ")";
         
         // On prépare la requête

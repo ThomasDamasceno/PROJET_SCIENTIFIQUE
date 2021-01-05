@@ -83,9 +83,8 @@ window.onload = function () {
       //L.marker([51.5, -0.09], {icon: caserne}).addTo(mymap);
       // L.latLng(feu.lat,feu.lon)
     ],
-    icon: L.icon({
+    icon: L.latLng({
         iconUrl: 'fire-station.png',
-    
         iconSize:     [38, 60], // size of the icon
         shadowSize:   [50, 64], // size of the shadow
         iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
