@@ -23,9 +23,9 @@ class Feu{
     }
 
     /**
-     * Lecture des agences
+     * Lecture des feux
      *
-     * @return void
+     * @return object
      */
     public function lire(){
         // On écrit la requête
@@ -39,5 +39,20 @@ class Feu{
 
         // On retourne le résultat
         return $query;
+    }
+
+    public function ecrire(){
+        //on écrit la requete
+        $sql = "INSERT INTO" . $this->table . "(intensite,lat,lon) VALUES (" 
+            . $this->intensite . "," . $this->lat .",". $this->lon . ")";
+        
+        // On prépare la requête
+        $query = $this->connexion->prepare($sql);
+
+        // On exécute la requête
+        $query->execute();
+
+        // On retourne le résultat
+        return $query;  
     }
 }

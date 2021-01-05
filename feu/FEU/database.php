@@ -2,7 +2,7 @@
 class Database{
     // Connexion à la base de données
     private $host = "localhost";
-    private $db_name = "feu";
+    private $db_name = "feu"; // Nom de la BDD 
     private $username = "root";
     private $password = "";
     public $connexion;
