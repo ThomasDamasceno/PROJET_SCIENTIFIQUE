@@ -44,16 +44,19 @@ class Feu{
     public function ecrire(){
         //on écrit la requete
         $sql = "INSERT INTO " . $this->table . " (intensite,lat,lon) VALUES (" 
-            . $this->intensite . "," . $this->lat .",". $this->lon . ")";
-        
+           . $this->intensite . "," . $this->lat .",". $this->lon . ")";
+    
         // On prépare la requête
         $query = $this->connexion->prepare($sql);
 
         // On exécute la requête
         $query->execute();
 
-        // On retourne le résultat
-        return $query;  
+        $sql2 = "UPDATE " . $this->table . " SET `intensite` = " . $this->intensite . " WHERE `lon` = " . $this->lon . " AND `lat` = " . $this->lat;
+    
+        $query2 = $this->connexion->prepare($sql2);
+        $query2->execute();
+
     }
 
 }
