@@ -1,6 +1,4 @@
 window.onload = function () {
-  //var feux;
-
   var mymap = L.map("mapid").setView([45.75, 4.85], 12); //création de la map avec les coordonnées de l'agglo de Lyon
   L.tileLayer(
     "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
@@ -16,79 +14,90 @@ window.onload = function () {
     }
   ).addTo(mymap);
 
-  
-//L.marker([51.5, -0.09], {icon: caserne}).addTo(mymap);
-  //update();
+  var cercle = []; //variable pour stocker les cercles
 
-  // function update() {
-  let xmlhttp = new XMLHttpRequest();
+  unload()
+  function unload() {
+    let xmlhttp = new XMLHttpRequest();
 
-  xmlhttp.onreadystatechange = () => {
-    // verifie si transaction est terminée
-    if (xmlhttp.readyState == 4) {
-      // on a passé les 4 etapes
-      //si la transcation est un succès
-      if (xmlhttp.status == 200) {
-        //on traite les données recus
-        console.log(xmlhttp.responseText);
-        let donnees = JSON.parse(xmlhttp.responseText);
-        //feux = donnees.feux
-        $("#liste").empty();
-        donnees.feux.forEach((feu) => {
-          //on boucle sur les donnees
-          // on crée un cercle pour le feu
-          let marker = L.circle([feu.lat, feu.lon], {
-            color: "red", // couleur bordure
-            fillColor: "#f03", // couleur du remplissage
-            radius: feu.intensite, //on gere le diametre du cercle selon l'intensite
-          }).addTo(mymap);
+    xmlhttp.onreadystatechange = () => {
+      // verifie si transaction est terminée
+      if (xmlhttp.readyState == 4) {
+        // on a passé les 4 etapes
+        //si la transcation est un succès
+        if (xmlhttp.status == 200) {
+          //on traite les données recus
+          console.log(xmlhttp.responseText);
+          let donnees = JSON.parse(xmlhttp.responseText);
+          //feux = donnees.feux
+          
 
-          $("#liste").append(
-            "<div><b>Feu ID : " +
-              feu.id +
-              "</b> <br> Intensite : " +
-              feu.intensite +
-              "<br> Longitude :" +
-              feu.lon +
-              "<br> Latitude :" +
-              feu.lat +
-              "</div>"
-          ); //JQUERY AFFICHER LISTE FEUX
-          marker.bindPopup(
-            "<b>Feu ID : " +
-              feu.id +
-              "</b> <br> Intensite : " +
-              feu.intensite +
-              "<br> Longitude :" +
-              feu.lon +
-              "<br> Latitude :" +
-              feu.lat
-          ); // popup lorsqu'on clique sur un feu
-        });
-      } else {
-        console.log(xmlhttp.statusText);
+          cercle.forEach(function (marker) {
+            mymap.removeLayer(marker); //supprime les cercles de la map
+          });
+          cercle = [] //on supprime le tableau à chaque fois
+
+          $("#liste").empty(); //on vide la liste pour eviter les doublons
+          donnees.feux.forEach((feu) => {
+            //on boucle sur les donnees
+            // on crée un cercle pour le feu
+            let marker = L.circle([feu.lat, feu.lon], {
+              color: "red", // couleur bordure
+              fillColor: "#f03", // couleur du remplissage
+              radius: feu.intensite, //on gere le diametre du cercle selon l'intensite
+            }).addTo(mymap);
+
+            cercle.push(marker); //on stocke les cercles dans le tableau cercle
+            console.log(cercle)
+            $("#liste").prepend(
+              "<div><b>Feu ID : " +
+                feu.id +
+                "</b> <br> Intensite : " +
+                feu.intensite +
+                "<br> Longitude :" +
+                feu.lon +
+                "<br> Latitude :" +
+                feu.lat +
+                "</div>"
+            ); //JQUERY AFFICHER LISTE FEUX
+            marker.bindPopup(
+              "<b>Feu ID : " +
+                feu.id +
+                "</b> <br> Intensite : " +
+                feu.intensite +
+                "<br> Longitude :" +
+                feu.lon +
+                "<br> Latitude :" +
+                feu.lat
+            ); // popup lorsqu'on clique sur un feu
+          });
+        } else {
+          console.log(xmlhttp.statusText);
+        }
       }
-    }
-  };
+    };
 
-  xmlhttp.open("GET", "http://localhost/feu/FEU/liste.php"); // requete GET depuis notre page de traitement
-  xmlhttp.send(null); // on ecrit null car on envoie pas de données on recupere seulement
+    xmlhttp.open("GET", "http://localhost/feu/FEU/liste.php"); // requete GET depuis notre page de traitement
+    xmlhttp.send(null); // on ecrit null car on envoie pas de données on recupere seulement
+
+    setTimeout(unload,(1000)); //appelle unload toutes les 1 sec
+  }
 
   //GESTION DES ITINERAIRES
   //  setTimeout(update,1000);
   //}
   L.Routing.control({
     waypoints: [
-      L.latLng(45.76281, 4.84701)
+      L.latLng(45.76281, 4.84701),
       //L.marker([51.5, -0.09], {icon: caserne}).addTo(mymap);
       // L.latLng(feu.lat,feu.lon)
     ],
     icon: L.latLng({
-        iconUrl: 'fire-station.png',
-        iconSize:     [38, 60], // size of the icon
-        shadowSize:   [50, 64], // size of the shadow
-        iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
-        popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+      iconUrl: "fire-station.png",
+      iconSize: [38, 60], // size of the icon
+      shadowSize: [50, 64], // size of the shadow
+      iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
+      popupAnchor: [-3, -76], // point from which the popup should open relative to the iconAnchor
     }),
     geocoder: L.Control.Geocoder.nominatim(),
     router: new L.Routing.osrmv1({
@@ -96,8 +105,6 @@ window.onload = function () {
     }),
   }).addTo(mymap);
 };
-
-
 
 function sleep(milliseconds) {
   const date = Date.now();

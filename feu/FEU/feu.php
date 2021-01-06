@@ -55,4 +55,5 @@ class Feu{
         // On retourne le résultat
         return $query;  
     }
+
 }
