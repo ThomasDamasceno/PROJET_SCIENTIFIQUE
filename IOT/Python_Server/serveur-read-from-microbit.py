@@ -51,7 +51,7 @@ if __name__ == "__main__":
                 flag = True
             elif data =='s':
                 flag = False
-                data_concat = data_concat.replace("}{"," , ")
+                data_concat = data_concat.replace("}{",",")
                 # data_concat = data_concat.replace("}","")
                 # data_concat = data_concat.replace("{","")
                 if len(data_concat)>=40:
