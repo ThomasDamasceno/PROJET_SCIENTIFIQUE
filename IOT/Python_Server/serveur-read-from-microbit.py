@@ -6,11 +6,15 @@ import serial
 import threading
 from clint.textui import colored
 import paho.mqtt.client as paho
+import requests
 
 serial_port = 'COM5'
 ser = serial.Serial(serial_port, 115200, timeout=1)
 broker = "vpn.goneix.net"
 port = 1883
+url = 'http://localhost/feu/Emergency/FEU/enregistre.php'
+
+
 def on_publish(client,userdata,result): #create function for callback
     print("data published \n")
     pass
@@ -40,6 +44,8 @@ def decrypt(string_to_encrypte = 'a', key = 0):
         encrypted_string += ascii_to_chr(c)
     return encrypted_string
 
+
+
 # Main
 if __name__ == "__main__":
     while True:
@@ -54,7 +60,7 @@ if __name__ == "__main__":
                 data_concat = data_concat.replace("}{",",")
                 # data_concat = data_concat.replace("}","")
                 # data_concat = data_concat.replace("{","")
-                if len(data_concat)>=40:
+                if len(data_concat)>=20:
                     print(colored.yellow(data_concat))
                     try:
                         jsonn = json.loads(data_concat)
@@ -62,10 +68,11 @@ if __name__ == "__main__":
                         lo = jsonn["lo"]
                         inte = jsonn["in"]
                         client1.publish(f"alarm/{lat}:{lo}/fire",float(inte))
+                        x = requests.post(url, data = '['+data_concat+']')
+                        print(colored.cyan(x.status_code))
                     except:
                         pass
                 data_concat = ''  
             if flag == True and data != 'S':
                     data = "{" + data + "}"
                     data_concat += data
-            

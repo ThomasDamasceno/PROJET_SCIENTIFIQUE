@@ -34,26 +34,29 @@ def encrypt(string_to_encrypte = 'a', key = 0):
 # Main
 if __name__ == "__main__":
     while True:
-       link = "http://localhost/PROJET_SCIENTIFIQUE-main/feu/FEU/liste.php"
-       f = urllib.request.urlopen(link)
-       json_data= f.read()
-       parsedJson = json.loads(json_data)
-       for i in range(0,len(parsedJson["feux"])):
-              print(parsedJson["feux"][i])
-              my_dict = parsedJson["feux"][i]
-              latitude = '{'+ encrypt('"la" : ' + str(my_dict["lat"]),3) + '}'
-              longitude = '{'+ encrypt('"lo" : ' + str(my_dict["lon"]),3) + '}'
-              intensite = '{'+ encrypt('"in" : ' + str(my_dict["intensite"]),3) + '}'
-              ser.write(str('{'+encrypt("S",3)+'}').encode())
-              time.sleep(2)
-              ser.write(latitude.encode("ascii"))
-              print(colored.blue(f'\nlatitude sent to serial : {latitude}\n'))
-              time.sleep(2)
-              ser.write(longitude.encode("ascii"))
-              print(colored.blue(f'\nlongitude sent to serial : {longitude}\n'))
-              time.sleep(2)
-              ser.write(intensite.encode("ascii"))
-              print(colored.blue(f'\nintensite du feu sent to serial : {intensite}\n'))
-              time.sleep(2)
-              ser.write(str('{'+encrypt("s",3)+'}').encode("ascii"))
-              time.sleep(2)
+       try:
+        link = "http://localhost/feu/Simulator/FEU/liste.php"
+        f = urllib.request.urlopen(link)
+        json_data= f.read()
+        parsedJson = json.loads(json_data)
+        for i in range(0,len(parsedJson["feux"])):
+                print(parsedJson["feux"][i])
+                my_dict = parsedJson["feux"][i]
+                latitude = '{'+ encrypt('"la":' + str(my_dict["lat"]),3) + '}'
+                longitude = '{'+ encrypt('"lo":' + str(my_dict["lon"]),3) + '}'
+                intensite = '{'+ encrypt('"in":' + str(my_dict["intensite"]),3) + '}'
+                ser.write(str('{'+encrypt("S",3)+'}').encode())
+                time.sleep(2)
+                ser.write(latitude.encode("ascii"))
+                print(colored.blue(f'\nlatitude sent to serial : {latitude}\n'))
+                time.sleep(2)
+                ser.write(longitude.encode("ascii"))
+                print(colored.blue(f'\nlongitude sent to serial : {longitude}\n'))
+                time.sleep(2)
+                ser.write(intensite.encode("ascii"))
+                print(colored.blue(f'\nintensite du feu sent to serial : {intensite}\n'))
+                time.sleep(2)
+                ser.write(str('{'+encrypt("s",3)+'}').encode("ascii"))
+                time.sleep(2)
+       except:
+           pass
