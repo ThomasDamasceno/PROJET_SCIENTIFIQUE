@@ -1,0 +1,31 @@
+hostname BBN-RT
+!
+interface GigabitEthernet0/0
+  ip address 192.168.22.2 255.255.255.252
+  no shutdown
+!
+interface GigabitEthernet0/1
+  description CE TEST EST CONCLUANT
+  ip address 192.168.25.2 255.255.255.252
+  no shutdown
+!
+interface GigabitEthernet0/2
+  description PAS UTILISÉ
+  shutdown
+!
+router ospf 1
+router-id 192.168.10.1
+  passive-interface GigabitEthernet0/2
+  passive-interface Fe0/0
+  network 10.1.25.4 0.0.0.3 area 0
+  network 192.168.10.1 0.0.0.0 area 0
+  
+router bgp 100
+  neighbor 1.1.1.1 remote-as 65001
+  neighbor 1.1.1.1 ebgp-multihop 2
+  neighbor 1.1.1.1 update-source Loopback0
+  neighbor 1.1.1.1 remove-private-as all
+  neighbor 192.168.10.1 remote-as 100
+  neighbor 192.168.10.1 update-source Loopback0
+  neighbor 192.168.10.1 next-hop-self
+  

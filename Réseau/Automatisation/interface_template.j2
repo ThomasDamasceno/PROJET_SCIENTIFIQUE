@@ -1,0 +1,33 @@
+hostname {{ hostname }}
+!
+{% for interface in interfaces -%}
+interface {{ interface['name'] }}
+  {% if interface['description'] -%}
+    description {{ interface['description']|upper }}
+  {% endif -%}
+  {% if interface['ip'] -%}
+    ip address {{ interface['ip'] }} {{ interface['mask'] }}
+  {% endif -%}
+  {% if interface['enabled'] %}no {% endif %}shutdown
+!
+{% endfor -%}
+router ospf {{ ospf['id'] }}
+router-id {{ ospf['loopback_ip'] }}
+  {% for passive in ospf['passive'] -%}
+    passive-interface {{ passive['passive-interface'] }}
+  {% endfor -%}
+  {% for networks in ospf['networks'] -%}
+    network {{ networks['ip_address'] }} {{ networks['reverse_mask'] }} area {{ networks['area'] }}
+  {% endfor %}
+router bgp {{ bgp['id'] }}
+  {% for neighbors in bgp['neighbors'] -%}
+  neighbor {{ neighbors['neighbor'] }} remote-as {{ neighbors['asn'] }}
+  {% if neighbors['asn'] >= 65000 -%}
+  neighbor {{ neighbors['neighbor'] }} ebgp-multihop 2
+  neighbor {{ neighbors['neighbor'] }} update-source Loopback0
+  neighbor {{ neighbors['neighbor'] }} remove-private-as all
+  {% else -%}
+  neighbor {{ neighbors['neighbor'] }} update-source Loopback0
+  neighbor {{ neighbors['neighbor'] }} next-hop-self
+  {% endif -%}
+  {% endfor -%}

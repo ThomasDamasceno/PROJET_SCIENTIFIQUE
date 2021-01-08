@@ -1,0 +1,33 @@
+hostname: BBN-RT
+interfaces:
+    - name: GigabitEthernet0/0
+      ip: 192.168.22.2
+      mask: 255.255.255.252
+      enabled: true
+    - name: GigabitEthernet0/1
+      description: ce test est concluant
+      ip: 192.168.25.2
+      mask: 255.255.255.252
+      enabled: true
+    - name: GigabitEthernet0/2
+      description: pas utilisé
+ospf:
+    id: 1
+    loopback_ip: 192.168.10.1
+    passive:
+        - passive-interface: GigabitEthernet0/2
+        - passive-interface: Fe0/0
+    networks:
+        - ip_address: 10.1.25.4
+          reverse_mask: 0.0.0.3
+          area: 0
+        - ip_address: 192.168.10.1
+          reverse_mask: 0.0.0.0
+          area: 0
+bgp:
+    id: 100
+    neighbors:
+        - neighbor: 1.1.1.1
+          asn: 65001
+        - neighbor: 192.168.10.1
+          asn: 100
