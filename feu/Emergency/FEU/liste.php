@@ -62,6 +62,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
                 "lat" => $lat,
                 "lon" => $lon,
                 "statut" => $statut,
+                "feu_id" => $feu_id
             ];
 
             $tableauCamions['camions'][] = $camcam;

@@ -71,6 +71,7 @@ class Camion {
     public $lat;
     public $lon;
     public $statut;
+    public $feu_id;
 
     /**
      * Constructeur avec $db pour la connexion à la base de données

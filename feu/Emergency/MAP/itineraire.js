@@ -14,7 +14,8 @@ window.onload = function () {
     }
   ).addTo(mymap);
 
-  var cercle = []; //variable pour stocker les cercles
+  var cercle = []; //variable pour stocker les cercles (feux)
+  var camions_liste = []; // variable pour stocker les camions
 
   unload();
   function unload() {
@@ -35,10 +36,17 @@ window.onload = function () {
           });
           cercle = []; //on supprime le tableau à chaque fois
 
-          $("#liste").empty(); //on vide la liste pour eviter les doublons
+          camions_liste.forEach(function (marker) {
+            mymap.removeLayer(marker); //supprimer les camions de la liste
+          });
+          camions_liste = []; //on supprime le tableau à chaque fois
+
+          $("#liste_feux").empty(); //on vide la liste pour eviter les doublons
+          $("#liste_camions").empty();
 
           console.log(donnees);
-          donnees[0].feux.forEach((feu) => { //on boucle sur les feux
+          donnees[0].feux.forEach((feu) => {
+            //on boucle sur les feux
             //on boucle sur les donnees
             // on crée un cercle pour le feu
             let marker = L.circle([feu.lat, feu.lon], {
@@ -49,14 +57,14 @@ window.onload = function () {
 
             cercle.push(marker); //on stocke les cercles dans le tableau cercle
             console.log(cercle);
-            $("#liste").prepend(
+            $("#liste_feux").prepend(
               "<div><b>Feu ID : " +
                 feu.id +
                 "</b> <br> Intensite : " +
                 feu.intensite +
-                "<br> Longitude :" +
+                "<br> Longitude : " +
                 feu.lon +
-                "<br> Latitude :" +
+                "<br> Latitude : " +
                 feu.lat +
                 "</div>"
             ); //JQUERY AFFICHER LISTE FEUX
@@ -65,35 +73,49 @@ window.onload = function () {
                 feu.id +
                 "</b> <br> Intensite : " +
                 feu.intensite +
-                "<br> Longitude :" +
+                "<br> Longitude : " +
                 feu.lon +
-                "<br> Latitude :" +
+                "<br> Latitude : " +
                 feu.lat
             ); // popup lorsqu'on clique sur un feu
           });
 
           donnees[1].camions.forEach((camion) => {
-
             var camionIcon = L.icon({
-              iconUrl: 'camion.png',
-          
-              iconSize:     [38, 50], // size of the icon
-              
-             
-          });
+              iconUrl: "camion.png",
+              iconSize: [35, 40], // size of the icon
+            });
 
-            let marker = L.marker([camion.lat, camion.lon], {icon: camionIcon}).addTo(mymap);
+            let marker = L.marker([camion.lat, camion.lon], {
+              icon: camionIcon,
+            }).addTo(mymap);
 
-          marker.bindPopup(
-            "<b>Camion ID : " +
+            camions_liste.push(marker);
+            $("#liste_camions").prepend(
+              "<div><b>Camion ID : " +
                 camion.id +
                 "</b> <br> Statut : " +
                 camion.statut +
-                "<br> Longitude :" +
+                "<br> Longitude : " +
                 camion.lon +
-                "<br> Latitude :" +
-                camion.lat
-          ); // popup lorsqu'on clique sur un feu 
+                "<br> Latitude : " +
+                camion.lat +
+                "<br> Affecté au feu ID: " +
+                camion.feu_id +
+                "</div>" 
+            ); //JQUERY AFFICHER LISTE CAMIONS
+            marker.bindPopup(
+              "<b>Camion ID : " +
+                camion.id +
+                "</b> <br> Statut : " +
+                camion.statut +
+                "<br> Longitude : " +
+                camion.lon +
+                "<br> Latitude : " +
+                camion.lat +
+                "<br> Affecté au feu ID : " +
+                camion.feu_id
+            ); // popup lorsqu'on clique sur un feu
           });
         } else {
           console.log(xmlhttp.statusText);

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : ven. 08 jan. 2021 à 09:34
+-- Généré le : ven. 08 jan. 2021 à 14:24
 -- Version du serveur :  5.7.31
 -- Version de PHP : 7.3.21
 
@@ -33,16 +33,17 @@ CREATE TABLE IF NOT EXISTS `camion` (
   `lat` double NOT NULL,
   `lon` double NOT NULL,
   `statut` tinyint(1) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+  `feu_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_feuid` (`feu_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `camion`
 --
 
-INSERT INTO `camion` (`id`, `lat`, `lon`, `statut`) VALUES
-(1, 3.5, 45, 1),
-(2, 3.5, 45, 1);
+INSERT INTO `camion` (`id`, `lat`, `lon`, `statut`, `feu_id`) VALUES
+(5, 45.738, 4.812, 1, 153);
 
 -- --------------------------------------------------------
 
@@ -59,7 +60,7 @@ CREATE TABLE IF NOT EXISTS `feu` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `lat` (`lat`),
   UNIQUE KEY `lon` (`lon`)
-) ENGINE=MyISAM AUTO_INCREMENT=154 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=154 DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `feu`
@@ -80,6 +81,16 @@ CREATE TABLE IF NOT EXISTS `pompier` (
   `nom` varchar(20) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Contraintes pour les tables déchargées
+--
+
+--
+-- Contraintes pour la table `camion`
+--
+ALTER TABLE `camion`
+  ADD CONSTRAINT `fk_feuid` FOREIGN KEY (`feu_id`) REFERENCES `feu` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
