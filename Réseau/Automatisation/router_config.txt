@@ -14,13 +14,14 @@ interface GigabitEthernet0/2
   shutdown
 !
 router ospf 1
-router-id 192.168.10.1
+  router-id 192.168.10.1
   passive-interface GigabitEthernet0/2
   passive-interface Fe0/0
   network 10.1.25.4 0.0.0.3 area 0
   network 192.168.10.1 0.0.0.0 area 0
   
 router bgp 100
+  bgp log-neighbor-changes
   neighbor 1.1.1.1 remote-as 65001
   neighbor 1.1.1.1 ebgp-multihop 2
   neighbor 1.1.1.1 update-source Loopback0

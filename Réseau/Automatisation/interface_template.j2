@@ -12,7 +12,7 @@ interface {{ interface['name'] }}
 !
 {% endfor -%}
 router ospf {{ ospf['id'] }}
-router-id {{ ospf['loopback_ip'] }}
+  router-id {{ ospf['loopback_ip'] }}
   {% for passive in ospf['passive'] -%}
     passive-interface {{ passive['passive-interface'] }}
   {% endfor -%}
@@ -20,6 +20,7 @@ router-id {{ ospf['loopback_ip'] }}
     network {{ networks['ip_address'] }} {{ networks['reverse_mask'] }} area {{ networks['area'] }}
   {% endfor %}
 router bgp {{ bgp['id'] }}
+  bgp log-neighbor-changes
   {% for neighbors in bgp['neighbors'] -%}
   neighbor {{ neighbors['neighbor'] }} remote-as {{ neighbors['asn'] }}
   {% if neighbors['asn'] >= 65000 -%}
