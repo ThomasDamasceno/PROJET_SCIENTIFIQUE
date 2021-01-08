@@ -36,7 +36,9 @@ window.onload = function () {
           cercle = []; //on supprime le tableau à chaque fois
 
           $("#liste").empty(); //on vide la liste pour eviter les doublons
-          donnees.feux.forEach((feu) => {
+
+          console.log(donnees);
+          donnees[0].feux.forEach((feu) => { //on boucle sur les feux
             //on boucle sur les donnees
             // on crée un cercle pour le feu
             let marker = L.circle([feu.lat, feu.lon], {
@@ -68,6 +70,30 @@ window.onload = function () {
                 "<br> Latitude :" +
                 feu.lat
             ); // popup lorsqu'on clique sur un feu
+          });
+
+          donnees[1].camions.forEach((camion) => {
+
+            var camionIcon = L.icon({
+              iconUrl: 'camion.png',
+          
+              iconSize:     [38, 50], // size of the icon
+              
+             
+          });
+
+            let marker = L.marker([camion.lat, camion.lon], {icon: camionIcon}).addTo(mymap);
+
+          marker.bindPopup(
+            "<b>Camion ID : " +
+                camion.id +
+                "</b> <br> Statut : " +
+                camion.statut +
+                "<br> Longitude :" +
+                camion.lon +
+                "<br> Latitude :" +
+                camion.lat
+          ); // popup lorsqu'on clique sur un feu 
           });
         } else {
           console.log(xmlhttp.statusText);
