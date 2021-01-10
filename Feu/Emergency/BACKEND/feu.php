@@ -101,21 +101,17 @@ class Camion {
         return $query;
     }
 
-    // public function ecrire(){
-    //     //on écrit la requete
-    //     $sql = "INSERT INTO " . $this->table . " (intensite,lat,lon) VALUES (" 
-    //        . $this->intensite . "," . $this->lat .",". $this->lon . ")";
-    
-    //     // On prépare la requête
-    //     $query = $this->connexion->prepare($sql);
+    public function ecrire(){
+        //on écrit la requete
+        $sql = "UPDATE " . $this->table . " SET `statut` = " . $this->statut . ", `feu_id` = " . $this->feu_id . " WHERE `id` = " . $this->id;
+        $query = $this->connexion->prepare($sql);
+        $query->execute();
 
-    //     // On exécute la requête
-    //     $query->execute();
+    }
 
-    //     $sql2 = "UPDATE " . $this->table . " SET `intensite` = " . $this->intensite . " WHERE `lon` = " . $this->lon . " AND `lat` = " . $this->lat;
-    
-    //     $query2 = $this->connexion->prepare($sql2);
-    //     $query2->execute();
-
-    // }
+    public function position () {
+        $sql = "UPDATE " . $this->table . " SET `statut` = " . $this->statut . ", `lat` = " . $this->lat . ", `lon` = " . $this->lon . " WHERE `id` = " . $this->id;
+        $query = $this->connexion->prepare($sql);
+        $query->execute();
+    }
 }
