@@ -49,7 +49,7 @@ public class WebService {
         return request(method, address, body != null ? body.getBytes(StandardCharsets.UTF_8) : null);
     }
 
-    public Object[] getFireTrucks() throws ParseException, IOException {
+    public Object[] getFiresAndTrucks() throws ParseException, IOException {
         String response = this.JsonRequest("GET", "http://0.0.0.0:8080/liste.php", null);
         List<Fire> fires = new ArrayList<Fire>();
         List<FireTruck> trucks = new ArrayList<FireTruck>();
@@ -79,6 +79,37 @@ public class WebService {
         Object[] array = { (Object) fires, (Object) trucks };
 
         return array;
+    }
+
+    public List<FireTruck> getFireTrucks() throws ParseException, IOException {
+        Object[] a = this.getFiresAndTrucks();
+        List<Fire> fires = (List<Fire>) a[0];
+        List<FireTruck> trucks = (List<FireTruck>) a[1];
+
+        for (FireTruck truck : trucks) {
+            for (Fire fire : fires) {
+                if(fire.getId() == truck.fire_id)
+                    truck.setDestination(fire.getCoordinate());
+            }
+        }
+
+        return trucks;
+    }
+
+    public GeoCoordinate getNextNode(Coordinate position, Coordinate destination) throws IOException, ParseException {
+        String response = this.JsonRequest("GET", "http://router.project-osrm.org/route/v1/driving/" + 
+            position.toString() + ";" + destination.toString(), null);
+
+        JSONObject jo = (JSONObject) new JSONParser().parse(response);
+        JSONArray waypoints = (JSONArray) jo.get("waypoints");
+        JSONArray coordinate = (JSONArray) waypoints.get(0);
+
+        GeoCoordinate geo = null;
+        if (coordinate != null) {
+            geo = new GeoCoordinate((Double) coordinate.get(0), (Double) coordinate.get(1));
+        }               
+
+        return geo;
     }
 
 }

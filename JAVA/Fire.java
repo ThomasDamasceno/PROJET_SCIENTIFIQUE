@@ -73,4 +73,9 @@ public class Fire {
 		return this.id;
 	}
 
+	public void extinguish() {
+        if(this.intensity > 0)
+            this.intensity -= 10;
+	}
+
 }

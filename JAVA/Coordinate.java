@@ -15,5 +15,11 @@ public class Coordinate {
 	public Double getDistance(Coordinate position) {
 
 		return Math.sqrt(Math.pow(position.x - this.x, 2.0) + Math.pow(position.y - this.y, 2.0));
-	}
+    }
+    
+    public String toString() {
+        GeoCoordinate geo = new GeoCoordinate(this);
+        
+        return geo.lon + "," + geo.lat;
+    }
 }
