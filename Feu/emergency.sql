@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : ven. 08 jan. 2021 à 14:24
+-- Généré le : mer. 13 jan. 2021 à 15:42
 -- Version du serveur :  5.7.31
 -- Version de PHP : 7.3.21
 
@@ -38,13 +38,6 @@ CREATE TABLE IF NOT EXISTS `camion` (
   KEY `fk_feuid` (`feu_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
---
--- Déchargement des données de la table `camion`
---
-
-INSERT INTO `camion` (`id`, `lat`, `lon`, `statut`, `feu_id`) VALUES
-(5, 45.738, 4.812, 1, 153);
-
 -- --------------------------------------------------------
 
 --
@@ -60,14 +53,7 @@ CREATE TABLE IF NOT EXISTS `feu` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `lat` (`lat`),
   UNIQUE KEY `lon` (`lon`)
-) ENGINE=InnoDB AUTO_INCREMENT=154 DEFAULT CHARSET=utf8;
-
---
--- Déchargement des données de la table `feu`
---
-
-INSERT INTO `feu` (`id`, `intensite`, `lat`, `lon`) VALUES
-(153, 38, 45.739499124736554, 4.813514074753513);
+) ENGINE=InnoDB AUTO_INCREMENT=161 DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
