@@ -59,4 +59,15 @@ class Feu{
 
     }
 
+    public function effacer() {
+        $sql = "DELETE FROM " . $this->table . " (intensite,lat,lon) VALUES (" 
+           . $this->intensite . "," . $this->lat .",". $this->lon . ")";
+    
+        // On prépare la requête
+        $query = $this->connexion->prepare($sql);
+
+        // On exécute la requête
+        $query->execute();
+    }
+
 }
