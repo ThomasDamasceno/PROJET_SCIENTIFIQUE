@@ -78,7 +78,7 @@ window.onload = function () {
     xmlhttp.open("GET", "http://localhost/Feu/Simulator/BACKEND/liste.php"); // requete GET depuis notre page de traitement
     xmlhttp.send(null); // on ecrit null car on envoie pas de données on recupere seulement
 
-    setTimeout(unload, 10000); //appelle unload toutes les 1 sec
+    setTimeout(unload, 2000); //appelle unload toutes les 1 sec
   }
 
   //GESTION DES ITINERAIRES
