@@ -126,24 +126,6 @@ window.onload = function () {
     xmlhttp.open("GET", "http://localhost/Feu/Emergency/BACKEND/liste.php"); // requete GET depuis notre page de traitement
     xmlhttp.send(null); // on ecrit null car on envoie pas de données on recupere seulement
 
-    setTimeout(unload, 10000); //appelle unload toutes les 1 sec
+    setTimeout(unload, 2000); //appelle unload toutes les 1 sec
   }
-
-  //GESTION DES ITINERAIRES
-  L.Routing.control({
-    waypoints: [
-      L.latLng(45.76281, 4.84701), //position caserne
-    ],
-    icon: L.latLng({
-      iconUrl: "fire-station.png",
-      iconSize: [38, 60], // size of the icon
-      shadowSize: [50, 64], // size of the shadow
-      iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
-      popupAnchor: [-3, -76], // point from which the popup should open relative to the iconAnchor
-    }),
-    geocoder: L.Control.Geocoder.nominatim(),
-    router: new L.Routing.osrmv1({
-      language: "fr",
-    }),
-  }).addTo(mymap);
 };

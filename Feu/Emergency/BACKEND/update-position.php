@@ -23,14 +23,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $content = file_get_contents('php://input');
    
+    $file = fopen('text.txt', "w");
+    fwrite($file, $content);
+
     if (is_array($array = json_decode($content, true))) {
 
         foreach($array as $elem) {
             $camion = new Camion($db);
+            $camion->id = $elem['id'];
             $camion->statut = $elem['statut'];
             $camion->lon = $elem['lon'];
             $camion->lat = $elem['lat'];
-            $camion->ecrire();
+            $camion->position();
         }
 
         // On envoie le code réponse 200 OK

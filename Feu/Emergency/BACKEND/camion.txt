@@ -1,0 +1,1 @@
+UPDATE camion SET `statut` = 1, `lat` = 45.741781, `lon` = 4.86054 WHERE `id` = 5

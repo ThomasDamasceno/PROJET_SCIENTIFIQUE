@@ -111,6 +111,8 @@ class Camion {
 
     public function position () {
         $sql = "UPDATE " . $this->table . " SET `statut` = " . $this->statut . ", `lat` = " . $this->lat . ", `lon` = " . $this->lon . " WHERE `id` = " . $this->id;
+        $stockage = fopen('camion.txt', 'w');
+        fwrite($stockage, $sql);
         $query = $this->connexion->prepare($sql);
         $query->execute();
     }
