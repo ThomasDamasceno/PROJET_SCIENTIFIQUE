@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $feu->statut = 1;
             $feu->lon = $elem['lo'];
             $feu->lat = $elem['la'];
-            $feu->ecrire();
+            $feu->ecrire(); 
         }
 
         // On envoie le code réponse 200 OK

@@ -48,9 +48,12 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
                 "intensite" => $intensite,
                 "lat" => $lat,
                 "lon" => $lon,
+                "statut" => $statut
             ];
 
-            $tableauFeux['feux'][] = $feufeu;
+            if ($feufeu['statut'] == 0) {
+                $tableauFeux['feux'][] = $feufeu;
+            }
         }
 
         //On parcourt les camions
