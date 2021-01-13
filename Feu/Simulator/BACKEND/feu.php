@@ -60,8 +60,7 @@ class Feu{
     }
 
     public function effacer() {
-        $sql = "DELETE FROM " . $this->table . " (intensite,lat,lon) VALUES (" 
-           . $this->intensite . "," . $this->lat .",". $this->lon . ")";
+        $sql = "DELETE FROM " . $this->table . " WHERE `lon` = " . $this->lon . " AND `lat` = " . $this->lat;
     
         // On prépare la requête
         $query = $this->connexion->prepare($sql);
