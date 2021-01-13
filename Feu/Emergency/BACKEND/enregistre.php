@@ -28,8 +28,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $feu->intensite = $elem['in'];
             $feu->lon = $elem['lo'];
             $feu->lat = $elem['la'];
-
+        
+        if ($feu->intensite > 0) {
             $feu->ecrire();
+
+        }
+        else {
+            $feu->supprimer();
+        }
         }
 
         // On envoie le code réponse 200 OK
