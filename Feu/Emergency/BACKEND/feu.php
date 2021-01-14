@@ -62,6 +62,9 @@ class Feu{
     public function eteindre() {
         $sql = "UPDATE " . $this->table . " SET `statut`= " . $this->statut . " WHERE `lon` = " . $this->lon . " AND `lat` = " . $this->lat;
         $query = $this->connexion->prepare($sql);
+        $FILE = fopen('eteindre.txt','w');
+        fwrite($FILE, $sql);
+
         $query->execute();
     }
 }
