@@ -21,8 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $content = file_get_contents('php://input');
 
-    $FILE = fopen('eteindre.txt','w');
-    fwrite($FILE, $content);
+    
 
     if (($elem = json_decode($content, true) != null)) {
 
@@ -30,6 +29,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $feu->statut = 1;
         $feu->lon = round ($elem['lo'], 7);
         $feu->lat = round ($elem['la'], 6);
+        
+        $FILE = fopen('eteindre.txt','w');
+        fwrite($FILE, $feu->lat . "," . $feu->lon);
+
         $feu->eteindre(); 
       
 
