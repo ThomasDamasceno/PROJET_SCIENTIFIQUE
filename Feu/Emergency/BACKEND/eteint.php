@@ -28,8 +28,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $feu = new Feu($db);
         $feu->statut = 1;
-        $feu->lon = $elem['lo'];
-        $feu->lat = $elem['la'];
+        $feu->lon = round ($elem['lo'], 7);
+        $feu->lat = round ($elem['la'], 6);
         $feu->eteindre(); 
       
 
