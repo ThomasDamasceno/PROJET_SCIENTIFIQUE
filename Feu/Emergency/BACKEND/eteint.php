@@ -27,9 +27,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $feu = new Feu($db);
         $feu->statut = 1;
-        $feu->lon = round ($elem['lo'], 7);
-        $feu->lat = round ($elem['la'], 6);
-        
+        $feu->lon = round (floatval($elem['lo']), 7);
+        $feu->lat = round (floatval($elem['la']), 6);
+
         $FILE = fopen('eteindre.txt','w');
         fwrite($FILE, $feu->lat . "," . $feu->lon);
 
