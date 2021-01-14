@@ -21,19 +21,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $content = file_get_contents('php://input');
 
-    $eteindre = fopen('eteindre.txt','w');
-    fwrite($eteindre, $content);
+    $FILE = fopen('eteindre.txt','w');
+    fwrite($FILE, $content);
 
-    if (is_array($array = json_decode($content, true))) {
+    if (($elem = json_decode($content, true) != null)) {
 
-
-        foreach($array as $elem) {
-            $feu = new Feu($db);
-            $feu->statut = 1;
-            $feu->lon = $elem['lo'];
-            $feu->lat = $elem['la'];
-            $feu->eteindre(); 
-        }
+        $feu = new Feu($db);
+        $feu->statut = 1;
+        $feu->lon = $elem['lo'];
+        $feu->lat = $elem['la'];
+        $feu->eteindre(); 
+      
 
         // On envoie le code réponse 200 OK
         http_response_code(200);
