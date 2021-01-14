@@ -21,7 +21,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $content = file_get_contents('php://input');
 
+    $eteindre = fopen('eteindre.txt','w');
+    fwrite($eteindre, $content);
+
     if (is_array($array = json_decode($content, true))) {
+
 
         foreach($array as $elem) {
             $feu = new Feu($db);
