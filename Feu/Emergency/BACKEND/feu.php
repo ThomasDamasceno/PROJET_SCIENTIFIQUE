@@ -61,7 +61,7 @@ class Feu{
 
     public function eteindre() {
         $sql = "UPDATE " . $this->table . " SET `statut`= " . $this->statut . " WHERE `lon` = " . $this->lon . " AND `lat` = " . $this->lat;
-        $query = $this->connexion->prepare($sql2);
+        $query = $this->connexion->prepare($sql);
         $query->execute();
     }
 }
