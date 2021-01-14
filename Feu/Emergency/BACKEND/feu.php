@@ -52,11 +52,17 @@ class Feu{
         // On exécute la requête
         $query->execute();
 
-        $sql2 = "UPDATE " . $this->table . " SET `intensite` = " . $this->intensite . ", `statut`= " . $this->statut . " WHERE `lon` = " . $this->lon . " AND `lat` = " . $this->lat;
+        $sql2 = "UPDATE " . $this->table . " SET `intensite` = " . $this->intensite . " WHERE `lon` = " . $this->lon . " AND `lat` = " . $this->lat;
     
         $query2 = $this->connexion->prepare($sql2);
         $query2->execute();
 
+    }
+
+    public function eteindre() {
+        $sql = "UPDATE " . $this->table . " SET `statut`= " . $this->statut . " WHERE `lon` = " . $this->lon . " AND `lat` = " . $this->lat;
+        $query = $this->connexion->prepare($sql2);
+        $query->execute();
     }
 }
 
