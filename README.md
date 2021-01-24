@@ -1,4 +1,4 @@
-# PROJET_SCIENTIFIQUE
+# Projet Scientifique
 
 Projet Académique dans le cadre de la formation Ingénieur informatique & Réseaux de communication de CPE Lyon.
 
